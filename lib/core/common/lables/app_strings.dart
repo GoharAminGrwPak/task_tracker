@@ -14,12 +14,14 @@ class AppString{
   static const task_prority='Priority';
   static const select='Select';
   static const project_name_hint='Please enter project name';
-  static const task_name_hint='Please enter ttask name';
+  static const task_name_hint='Please enter task name';
   static const projects_no_data='No information is recorded\nPlease Tap + to Start';
   static const project_success='has been created successfully';
   static const something_went_wrong='Something went wrong';
   static const create_project='New';
   static const next='Next';
+  static const update_task='Update Task';
+  static const create_new='Create New Task';
   static const home='Go to Home';
   static const steps='Step';
   static const succes_delete_message='Project is deleted successfully';

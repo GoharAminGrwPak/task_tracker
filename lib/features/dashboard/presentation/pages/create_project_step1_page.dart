@@ -7,6 +7,7 @@ import 'package:task_tracker/core/common/navigation/app_routes.dart';
 import 'package:task_tracker/core/common/widgets/next_button.dart';
 import 'package:task_tracker/core/common/widgets/step_widget.dart';
 import 'package:task_tracker/features/dashboard/presentation/controllers/project_controller.dart';
+import 'package:task_tracker/features/dashboard/presentation/controllers/task_controller.dart';
 import 'package:task_tracker/features/dashboard/presentation/widgets/no_information_widget.dart';
 import 'package:task_tracker/features/dashboard/presentation/widgets/project_type_item_widget.dart';
 class CreateProjectTypePage extends StatelessWidget {
@@ -14,6 +15,7 @@ class CreateProjectTypePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var projectController = AppDependency<ProjectController>();
+    var taskController = AppDependency<TaskController>();
     return  Scaffold(
       appBar: AppBar(title: Text(AppString.create_project.tr),),
       body: Padding(
@@ -30,6 +32,9 @@ class CreateProjectTypePage extends StatelessWidget {
       ),
       bottomNavigationBar: InkWell(
         onTap: (){
+          AppDependency<TaskController>().projectId=null;
+          AppDependency<TaskController>().projectName='';
+          taskController.setDefault();
           Get.toNamed(AppRoutes.newTaskStep2);
         }, child: NextButtonWidget(title: AppString.next,)),
     );

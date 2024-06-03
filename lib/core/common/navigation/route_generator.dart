@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_tracker/features/dashboard/presentation/pages/all_tasks_page.dart';
 import 'package:task_tracker/features/dashboard/presentation/pages/create_project_step1_page.dart';
 import 'package:task_tracker/features/dashboard/presentation/pages/create_project_step2_page.dart';
 import 'package:task_tracker/features/dashboard/presentation/pages/create_project_step3_page.dart';
@@ -16,6 +17,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => CreateProjectTypePage());
         case AppRoutes.newTaskStep2:
         return MaterialPageRoute(builder: (_) => CreateProjectPage());
+        case AppRoutes.allTasks:
+        return MaterialPageRoute(builder: (_) => AllTasksPage());
         case AppRoutes.newTaskStep3:
         return MaterialPageRoute(builder: (_) => CreateProjectSuccessPage());
       default:

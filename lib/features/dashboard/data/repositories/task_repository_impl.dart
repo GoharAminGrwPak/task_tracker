@@ -10,8 +10,8 @@ import 'package:dio/dio.dart' as dio;
 
 class TaskRepositoryImpl extends TaskRepository{
   @override
-  void createTask(Map<String, dynamic> map, Function(ProjectModelDto p1) onData) {
-    ApiRequestHttp.postRequest(endpoint: '${ApiEndPoint.createTask}',
+  void createTask(Map<String, dynamic> map, Function(ProjectModelDto p1) onData,{String? id}) {
+    ApiRequestHttp.postRequest(endpoint: id==null?'${ApiEndPoint.createTask}':'${ApiEndPoint.createTask}/${id}',
         body: map,
         onData:(res){
           AppUtil.dismissLoading();
@@ -25,8 +25,8 @@ class TaskRepositoryImpl extends TaskRepository{
   }
 
   @override
-  getAllTasks(Function(List<TaskEntity> p1) onData) {
-    ApiRequestHttp.getRequest(endpoint: '${ApiEndPoint.createTask}',
+  getAllTasks(String? query,Function(List<TaskEntity> p1) onData,) {
+    ApiRequestHttp.getRequest(endpoint: query==null?'${ApiEndPoint.createTask}':'${ApiEndPoint.createTask}?project_id=${query}',
         onData:(res){
           AppUtil.dismissLoading();
           List<TaskEntity>list=[];

@@ -26,13 +26,13 @@ class DashboardController extends GetxController{
       update(['root']);
     });
   }
-  getAllTasks(){
+  getAllTasks({String? query}){
     allProjects=null;
     allTasks=null;
-    update(['root']);
-    AppDependency<AllTaskUseCase>().getAllTasks((p0){
+    update(['root','load_new_tasks']);
+    AppDependency<AllTaskUseCase>().getAllTasks(query,(p0){
       allTasks=p0;
-      update(['root']);
+      update(['root','load_new_tasks']);
     });
   }
   deleteProject(index){

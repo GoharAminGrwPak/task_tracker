@@ -9,6 +9,8 @@ import 'package:task_tracker/features/dashboard/domain/entities/project_type_ent
 import 'package:task_tracker/features/dashboard/domain/usecases/create_project_usecase.dart';
 import 'package:task_tracker/features/dashboard/domain/usecases/delete_project_usecase.dart';
 
+import 'task_controller.dart';
+
 class ProjectController extends GetxController{
   RxInt selectedType=1.obs;
   TextEditingController projectNameController=TextEditingController();
@@ -40,7 +42,11 @@ class ProjectController extends GetxController{
       return;
     }
     AppDependency<CreateProjectUseCase>().createProject(projectNameController.text,(dto){
-      Get.offAndToNamed(AppRoutes.newTaskStep3);
+      if(null==AppDependency<TaskController>().projectId) {
+        Get.offAndToNamed(AppRoutes.newTaskStep3);
+      }else{
+        Get.back();
+      }
     });
   }
 

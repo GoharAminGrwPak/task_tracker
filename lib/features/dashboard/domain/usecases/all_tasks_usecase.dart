@@ -5,8 +5,8 @@ import 'package:task_tracker/features/dashboard/domain/repositories/project_repo
 import 'package:task_tracker/features/dashboard/domain/repositories/task_repository.dart';
 
 class AllTaskUseCase{
-  getAllTasks(Function(List<TaskEntity>) onData){
+  getAllTasks(String? query,Function(List<TaskEntity>) onData){
     TaskRepository projectRepository=AppDependency<TaskRepository>();
-    projectRepository.getAllTasks(onData);
+    projectRepository.getAllTasks(query,onData);
   }
 }

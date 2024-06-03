@@ -4,8 +4,8 @@ import 'package:task_tracker/features/dashboard/domain/repositories/project_repo
 import 'package:task_tracker/features/dashboard/domain/repositories/task_repository.dart';
 
 class CreateTaskUseCase{
-  createTask(Map<String,dynamic> map,Function(ProjectModelDto) onData){
+  createTask(Map<String,dynamic> map,Function(ProjectModelDto) onData,{String? id}){
     TaskRepository projectRepository=AppDependency<TaskRepository>();
-    projectRepository.createTask(map,onData);
+    projectRepository.createTask(map,onData,id:id);
   }
 }

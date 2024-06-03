@@ -6,9 +6,12 @@ import 'package:task_tracker/core/common/lables/app_strings.dart';
 import 'package:task_tracker/core/common/navigation/app_routes.dart';
 import 'package:task_tracker/core/utils/app_utils.dart';
 import 'package:task_tracker/features/dashboard/domain/entities/project_type_entity.dart';
+import 'package:task_tracker/features/dashboard/domain/entities/task_entity.dart';
 import 'package:task_tracker/features/dashboard/domain/usecases/create_project_usecase.dart';
 import 'package:task_tracker/features/dashboard/domain/usecases/create_task_usecase.dart';
 import 'package:task_tracker/features/dashboard/domain/usecases/delete_project_usecase.dart';
+
+import 'project_controller.dart';
 
 class TaskController extends GetxController{
   TextEditingController taskNameController=TextEditingController();
@@ -24,6 +27,7 @@ class TaskController extends GetxController{
   GlobalKey<PopupMenuButtonState<String>>  prorityKey=GlobalKey();
   GlobalKey<PopupMenuButtonState<String>>  durationKey=GlobalKey();
   String? projectId;
+  String? projectName;
   List<String> status=[
     AppString.todo.tr,
     AppString.in_progress.tr,
@@ -47,7 +51,9 @@ class TaskController extends GetxController{
   List<int> statusCode=[0, 1, 2, 3, 4, 5,6,7];
   List<int> prorityCode=[1, 2, 3, 4,];
   List<int> durationCode=[1, 2, 3,];
+  String? id;
   setDefault(){
+    id=null;
     taskNameController.text='';
     taskDescController.text='';
     taskProrityController.text='';
@@ -104,19 +110,47 @@ class TaskController extends GetxController{
         AppUtil.showToastError(AppString.duration_required.tr);
         return;
       }
-      var indexWhere = durationUnit.indexWhere((element) => element==taskDurationUnitController.text);
+      var indexWhere = durationUnit.indexWhere((element) => element.toLowerCase()==taskDurationUnitController.text.toLowerCase());
       map['duration_unit']='${durationUnit[indexWhere]}'.toLowerCase();
     }
 
 
-    if(null!=projectId){
+    if(null!=projectId &&AppDependency<ProjectController>().selectedType.value!=1){
       map['project_id']="${projectId}";
     }
     debugPrint('Result ${map.toString()}');
     // return;
     AppDependency<CreateTaskUseCase>().createTask(map,(dto){
-      Get.offAndToNamed(AppRoutes.newTaskStep3);
-    });
+      if(null==AppDependency<TaskController>().projectId) {
+        Get.offAndToNamed(AppRoutes.newTaskStep3);
+      }else{
+        Get.back();
+      }
+    },id:id);
+  }
+  void setEditData(TaskEntity? task, TaskController taskController, String? prority, String? statusTicket, DateTime? dateVariable) {
+    id=task?.id;
+    if(null!=task?.content) {
+      taskController.taskNameController.text = '${task?.content}';
+    }
+    if(null!=task?.description) {
+      taskController.taskDescController.text='${task?.description}';
+    }
+    if(null!=prority) {
+      taskController.taskProrityController.text='${prority}';
+    }if(null!=statusTicket) {
+      taskController.taskStatusController.text='${statusTicket}';
+    }
+    if(null!=task?.due?.string){
+      taskController.startDateTimeController.text='${task?.due?.string}';
+    }if(null!=task?.duration?.amount){
+      taskController.taskDurationUnitController.text='${task?.due?.string}';
+    }if(null!=task?.duration?.unit){
+      taskController.taskDurationUnitController.text='${task?.duration?.unit}';
+    }
+    if(null!=dateVariable){
+      taskController.dueDateController.text='${AppUtil.format(dateVariable)}';
+    }
   }
 
   @override

@@ -24,16 +24,17 @@ class CreateProjectPage extends StatelessWidget {
           init: taskController,
           id: 'root',
           initState: (_){
-            taskController.setDefault();
+            // taskController.setDefault();
           },
           builder: (_) {
             return ListView(children: [
-              StepsIndicator(2),
+              if(null==taskController.projectId)StepsIndicator(2),
 
               if(projectController.selectedType.value==1)
                 getTextField(projectController.projectNameController,AppString.project_name,AppString.project_name_hint,isRequired: true)
               else Column(children: [
                 SizedBox(height: 20,),
+                if(null!=taskController.projectId&& null!=taskController.projectName)AbsorbPointer(child: getTextField(TextEditingController(text: '${taskController.projectName}'),AppString.project_name,AppString.task_name_hint,isRequired: true)),
                 getTextField(taskController.taskNameController,AppString.task_name,AppString.task_name_hint,isRequired: true),
                 getTextField(taskController.taskDescController,AppString.task_Description.tr,''),
                 InkWell(
@@ -113,7 +114,7 @@ class CreateProjectPage extends StatelessWidget {
           }else{
             taskController.createTask();
           }
-        }, child: NextButtonWidget(title: AppString.next,)),
+        }, child: NextButtonWidget(title: taskController.id==null?AppString.next:AppString.update_task,)),
     );
   }
 
