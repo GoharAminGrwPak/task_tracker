@@ -55,18 +55,18 @@ class StepsIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 22,
-          height: 22,
+          width: 26,
+          height: 26,
           decoration:BoxDecoration(
-            border: Border.all(color: ColorConstants.mainColor),
+            border: isDone == 3
+                ? Border.all(color: ColorConstants.mainColor,)
+                : isDone == 2
+                ? Border.all(color: ColorConstants.mainColor,)
+                :Border.all(color: ColorConstants.greyColor,),
             color: Color.fromRGBO(255, 255, 255, 1.0),
             shape: BoxShape.circle,
           ),
-          child: isDone == 3
-              ? stepDone()
-              : isDone == 2
-              ? stepDone()
-              : Center(child: Text('${numStep}',)),
+          child:  Center(child: Text('${numStep}',)),
         ),
         numStep != 3
             ? line(isDone)

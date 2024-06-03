@@ -29,9 +29,11 @@ class CreateProjectPage extends StatelessWidget {
           builder: (_) {
             return ListView(children: [
               StepsIndicator(2),
+
               if(projectController.selectedType.value==1)
                 getTextField(projectController.projectNameController,AppString.project_name,AppString.project_name_hint,isRequired: true)
               else Column(children: [
+                SizedBox(height: 20,),
                 getTextField(taskController.taskNameController,AppString.task_name,AppString.task_name_hint,isRequired: true),
                 getTextField(taskController.taskDescController,AppString.task_Description.tr,''),
                 InkWell(
@@ -116,52 +118,15 @@ class CreateProjectPage extends StatelessWidget {
   }
 
   Widget getTextField(TextEditingController controller,String label,String hint,{bool isRequired=false,}) {
-    return TextFormField(
-            controller: controller,
-            decoration:InputDecoration(
-
-              label: Row(
-                children: [
-                  Text(
-                      label.tr
-                  ),
-                  if(isRequired)Text(
-                    ' * ',
-                    style: TextStyle(color: ColorConstants.redColorAccent),
-                  ),
-                ],
-              ),
-              hintText:hint,
-            ),
-          );
-  }
-  Widget dropDownWidget(BuildContext context,
-      TextEditingController controller,
-      String label,String hint,
-      {bool isRequired=false,required GlobalKey key,required List<String> list}) {
-    return AbsorbPointer(
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
       child: TextFormField(
               controller: controller,
               decoration:InputDecoration(
-                suffixIcon:PopupMenuButton<String>(
-                  key: key,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  onSelected: (String value) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    if(value=="Select".tr){
-                      controller.text="";
-                      return;
-                    }
-                    controller.text = value;
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return list.map<PopupMenuItem<String>>((String value) {
-                      return PopupMenuItem(
-                          child: Text(value), value: value);
-                    }).toList();
-                  },
-                ),
-
+                border: outlineInputBorderNew,
+                focusedBorder: outlineInputBorderNew,
+                enabledBorder: outlineInputBorderNew,
+                errorBorder: outlineInputBorderNew,
                 label: Row(
                   children: [
                     Text(
@@ -178,7 +143,59 @@ class CreateProjectPage extends StatelessWidget {
             ),
     );
   }
+  Widget dropDownWidget(BuildContext context,
+      TextEditingController controller,
+      String label,String hint,
+      {bool isRequired=false,required GlobalKey key,required List<String> list}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+
+      child: AbsorbPointer(
+        child: TextFormField(
+                controller: controller,
+                decoration:InputDecoration(
+                  suffixIcon:PopupMenuButton<String>(
+                    key: key,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (String value) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      if(value=="Select".tr){
+                        controller.text="";
+                        return;
+                      }
+                      controller.text = value;
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return list.map<PopupMenuItem<String>>((String value) {
+                        return PopupMenuItem(
+                            child: Text(value), value: value);
+                      }).toList();
+                    },
+                  ),
+                  border: outlineInputBorderNew,
+                  focusedBorder: outlineInputBorderNew,
+                  enabledBorder: outlineInputBorderNew,
+                  errorBorder: outlineInputBorderNew,
+                  label: Row(
+                    children: [
+                      Text(
+                          label.tr
+                      ),
+                      if(isRequired)Text(
+                        ' * ',
+                        style: TextStyle(color: ColorConstants.redColorAccent),
+                      ),
+                    ],
+                  ),
+                  hintText:hint,
+                ),
+              ),
+      ),
+    );
+  }
 }
+ const outlineInputBorderNew=OutlineInputBorder(borderSide: BorderSide(color: ColorConstants.txtBoarderColor),borderRadius: BorderRadius.all(Radius.circular(6)));
+
 
 
 

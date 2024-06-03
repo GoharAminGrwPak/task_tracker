@@ -4,7 +4,7 @@ class AppString{
   static const project_name='Project Name';
   static const project='Project';
   static const task='Task';
-  static const task_name='Task testtingName';
+  static const task_name='Task Name';
   static const task_Description='Description';
   static const task_duration='Duration';
   static const task_unit='Unit';

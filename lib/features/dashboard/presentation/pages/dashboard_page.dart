@@ -9,6 +9,7 @@ import 'package:task_tracker/core/common/navigation/app_routes.dart';
 import 'package:task_tracker/core/common/widgets/next_button.dart';
 import 'package:task_tracker/core/utils/app_utils.dart';
 import 'package:task_tracker/features/dashboard/presentation/controllers/dashboard_controller.dart';
+import 'package:task_tracker/features/dashboard/presentation/controllers/task_controller.dart';
 import 'package:task_tracker/features/dashboard/presentation/widgets/no_information_widget.dart';
 import 'package:task_tracker/features/dashboard/presentation/widgets/tab_bar_item_widget.dart';
 class DashboardPage extends StatelessWidget {
@@ -97,6 +98,8 @@ class DashboardPage extends StatelessWidget {
     }
   }
   StatelessWidget allTasks(DashboardController dashboardController) {
+    var taskController = AppDependency<TaskController>();
+
     if(dashboardController.allTasks==null){
       return LoaderLayout(Get.width);
     }
@@ -110,6 +113,8 @@ class DashboardPage extends StatelessWidget {
           itemBuilder: (_,index){
             DateTime? dateVariable;
             String? otherVariable;
+            String? prority;
+            String? statusTicket;
             if((dashboardController.allTasks?[index].labels?.length??0)>0) {
               for (var item in dashboardController.allTasks![index].labels!) {
     // Check if the item can be parsed to a DateTime
@@ -118,8 +123,22 @@ class DashboardPage extends StatelessWidget {
       dateVariable = date;
     } else {
       otherVariable = item;
+
     }
-  }}
+  }
+            }
+            if(null!=dashboardController.allTasks?[index].priority) {
+              var indexWhere = taskController.prorityCode.indexWhere((element) => element== dashboardController.allTasks?[index].priority);
+              if(indexWhere>-1) {
+                prority=taskController.prority[indexWhere];
+              }
+            }
+            if(null!=otherVariable) {
+              var indexWhere = taskController.statusCode.indexWhere((element) => '$element' == '$otherVariable');
+              if(indexWhere>-1) {
+                statusTicket=taskController.status[indexWhere];
+              }
+            }
             return InkWell(
           onTap: (){
             dashboardController.selectedTask.value=index;
@@ -130,7 +149,7 @@ class DashboardPage extends StatelessWidget {
                 color: index==dashboardController.selectedTask.value?ColorConstants.mainColor.withOpacity(0.2):Colors.transparent
             ),
             child: ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 leading: Container(
                     padding: EdgeInsets.all( 4),
                     decoration:BoxDecoration(
@@ -144,11 +163,10 @@ class DashboardPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if(null!=dashboardController.allTasks?[index].description &&''!=dashboardController.allTasks?[index].description)Text('${dashboardController.allTasks?[index].description}'),
-                    if(null!=dashboardController.allTasks?[index].priority)Text('${dashboardController.allTasks?[index].priority}'),
-                    if(null!=otherVariable)Text('${
-                        otherVariable
-                    }'),
-                    if(null!=dashboardController.allTasks?[index].duration?.amount)Text('${dashboardController.allTasks?[index].duration?.amount}'),
+                    if(null!=prority)Text('${prority}'),
+                    if(null!=statusTicket)Text('${statusTicket}'),
+                    if(null!=dashboardController.allTasks?[index].duration?.amount)
+                      Text('${dashboardController.allTasks?[index].duration?.amount}'),
                     if(null!=dashboardController.allTasks?[index].duration?.unit)Text('${dashboardController.allTasks?[index].duration?.unit}'),
                     if(null!=dashboardController.allTasks?[index].due?.string)Text('Start time ${dashboardController.allTasks?[index].due?.string}'),
                     if(null!=dateVariable)Text('End time ${AppUtil.format(dateVariable)}'),

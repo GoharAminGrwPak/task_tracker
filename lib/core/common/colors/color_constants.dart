@@ -22,6 +22,7 @@ class ColorConstants {
       900: Color(0xFFFFFFFF),
     },
   );
+  static const txtBoarderColor = Color(0x459E9E9E);
   static const mainColor = Color(0xFF26baed);
   static const successColor = Color(0xff00B43D);
   static const redColor = Color(0xFFc62a2b);
