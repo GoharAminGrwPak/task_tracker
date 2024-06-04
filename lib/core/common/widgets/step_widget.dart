@@ -63,7 +63,7 @@ class StepsIndicator extends StatelessWidget {
                 : isDone == 2
                 ? Border.all(color: ColorConstants.mainColor,)
                 :Border.all(color: ColorConstants.greyColor,),
-            color: Color.fromRGBO(255, 255, 255, 1.0),
+            color: Colors.transparent,
             shape: BoxShape.circle,
           ),
           child:  Center(child: Text('${numStep}',)),

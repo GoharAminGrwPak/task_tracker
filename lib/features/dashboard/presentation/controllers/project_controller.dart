@@ -28,7 +28,7 @@ class ProjectController extends GetxController{
         id: 2,
       name: 'Task',
       icon: AppIcons.type2Icon,
-      description: 'Create a Tt=ask without associating the project '
+      description: 'Create a task without associating the project'
     ),
   ];
   setDefault(){

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "121276670790",
+    "project_id": "task-tracker-c4a4e",
+    "storage_bucket": "task-tracker-c4a4e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121276670790:android:7504c30c9732ea52eebb47",
+        "android_client_info": {
+          "package_name": "com.gohar_amin.task_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgdeiBvGQQX1d-Ef0Wzl2jrvO3hp094q4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

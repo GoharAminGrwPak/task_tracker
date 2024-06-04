@@ -4,6 +4,7 @@ import 'package:task_tracker/features/dashboard/presentation/pages/create_projec
 import 'package:task_tracker/features/dashboard/presentation/pages/create_project_step2_page.dart';
 import 'package:task_tracker/features/dashboard/presentation/pages/create_project_step3_page.dart';
 import 'package:task_tracker/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:task_tracker/features/dashboard/presentation/pages/langauge_page.dart';
 
 import 'app_routes.dart';
 
@@ -13,6 +14,8 @@ class RouteGenerator {
     switch (settings.name) {
       case AppRoutes.dashBoardRoute:
         return MaterialPageRoute(builder: (_) => DashboardPage());
+        case AppRoutes.language:
+        return MaterialPageRoute(builder: (_) => LanguagePage());
         case AppRoutes.newTaskStep1:
         return MaterialPageRoute(builder: (_) => CreateProjectTypePage());
         case AppRoutes.newTaskStep2:

@@ -6,6 +6,7 @@ import 'package:task_tracker/core/common/icons/app_icons.dart';
 import 'package:task_tracker/core/common/lables/app_strings.dart';
 import 'package:task_tracker/core/common/loader/loader_layout.dart';
 import 'package:task_tracker/core/common/navigation/app_routes.dart';
+import 'package:task_tracker/core/common/theme/theme_controller.dart';
 import 'package:task_tracker/core/common/widgets/next_button.dart';
 import 'package:task_tracker/core/utils/app_utils.dart';
 import 'package:task_tracker/features/dashboard/domain/entities/task_entity.dart';
@@ -20,11 +21,24 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var dashboardController = AppDependency<DashboardController>();
     var taskController = AppDependency<TaskController>();
-
+    var projectController=AppDependency<ProjectController>();
     return  Scaffold(
-      appBar: AppBar(title: Text(AppString.projects_app_bar.tr),),
+      appBar: AppBar(
+        title: Text(AppString.app_name.tr),
+        actions: [
+          IconButton(onPressed: (){
+           Get.toNamed(AppRoutes.language);
+          }, icon:Icon(Icons.language)),
+          IconButton(onPressed: (){
+            AppDependency<ThemeController>().toggleTheme();
+          }, icon:
+          AppDependency<ThemeController>().
+          isDarkMode.value==true?Icon(Icons.light_mode_outlined):Icon(Icons.dark_mode_outlined)),
+
+        ],
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.only(left: 15.0,right: 15,top: 15),
         child: Column(children: [
          getTabBar(dashboardController),
           SizedBox(height: 10,),
@@ -34,7 +48,8 @@ class DashboardPage extends StatelessWidget {
                 id: 'root',
                 initState: (_){
                   Future.delayed(Duration(milliseconds: 100),(){
-                    dashboardController.getAllProjects();
+                    dashboardController.getAllTasks();
+                    // dashboardController.getAllProjects();
                   });
 
                 },
@@ -43,12 +58,8 @@ class DashboardPage extends StatelessWidget {
               allProjects(dashboardController):
               AllTasksWidget(dashboardController.allTasks,dashboardController.selectedTask,actionCallback: (index){
                 dashboardController.selectedTask.value=index;
-                AppDependency<ProjectController>().selectedType.value=2;
                 taskController.projectId = dashboardController.allTasks?[index].projectId;
-                taskController.projectName=null;
-                Get.toNamed(AppRoutes.newTaskStep2)?.then((value){
-                  dashboardController.getAllTasks();
-                });
+
               },deleteCallback: (index){
                 dashboardController.deleteTask(index);
               });
@@ -60,17 +71,32 @@ class DashboardPage extends StatelessWidget {
           init: dashboardController,
           id: 'root',
           builder: (DashboardController controller) {
-            return ((dashboardController.allProjects?.length??0)>0)?InkWell(onTap:(){
-              AppDependency<ProjectController>().selectedType.value=2;
-              taskController.projectId="${dashboardController.allProjects?[dashboardController.selectedProject.value].id}";
-              taskController.projectName='${dashboardController.allProjects?[dashboardController.selectedProject.value].name}';
-              Get.toNamed(AppRoutes.allTasks)?.then((value){
-                dashboardController.getAllTasks();
-              });
+            return ((dashboardController.allProjects?.length??0)>0 ||(dashboardController.allTasks?.length??0)>0)?
+
+            InkWell(onTap:(){
+              if(dashboardController.selectedIndex.value==0) {
+                projectController.selectedType.value = 2;
+                taskController.projectId =
+                "${dashboardController.allProjects?[dashboardController
+                    .selectedProject.value].id}";
+                taskController.projectName =
+                '${dashboardController.allProjects?[dashboardController
+                    .selectedProject.value].name}';
+                Get.toNamed(AppRoutes.allTasks)?.then((value) {
+                  dashboardController.getAllTasks();
+                });
+              }else{
+                projectController.selectedType.value=2;
+                taskController.projectName=null;
+                Get.toNamed(AppRoutes.newTaskStep2)?.then((value){
+                  dashboardController.getAllTasks();
+                });
+              }
             },child: NextButtonWidget(title: '${AppString.select}'.tr)):SizedBox(height: 0,width: 0,);
         }
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
+        projectController.selectedType.value=dashboardController.selectedIndex.value==0?1:2;
         Get.toNamed(AppRoutes.newTaskStep1);
       }, child: Icon(Icons.add),),
     );
@@ -206,27 +232,8 @@ class AllTasksWidget extends StatelessWidget {
                 ),
                 child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                    leading: Container(
-                        padding: EdgeInsets.all( 4),
-                        decoration:BoxDecoration(
-                            border: Border.all(color: ColorConstants.mainColor),
-                            shape: BoxShape.circle
-                        ) ,
-                        child: Icon(AppIcons.type2Icon,color: ColorConstants.mainColor,size: 18,)),
-                    title: Text('${allTasks?[index].content}'),
-                    subtitle: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if(null!=allTasks?[index].description &&''!=allTasks?[index].description)Text('${allTasks?[index].description}'),
-                        if(null!=prority)Text('${prority}'),
-                        if(null!=statusTicket)Text('${statusTicket}'),
-                        if(null!=allTasks?[index].duration?.amount)
-                          Text('${allTasks?[index].duration?.amount}'),
-                        if(null!=allTasks?[index].duration?.unit)Text('${allTasks?[index].duration?.unit}'),
-                        if(null!=allTasks?[index].due?.string)Text('Start time ${allTasks?[index].due?.string}'),
-                        if(null!=dateVariable)Text('End time ${AppUtil.format(dateVariable)}'),
-                      ],),
+                    title: Text('${allTasks?[index].content}',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: subTitleWidget(index, prority, statusTicket, dateVariable),
                     trailing: InkWell(onTap:(){
                       deleteCallback?.call(index);
 
@@ -239,6 +246,57 @@ class AllTasksWidget extends StatelessWidget {
     }else {
       return NoInformationWidget(msg: AppString.something_went_wrong.tr,);
     }
+  }
+
+  Column subTitleWidget(int index, String? priority, String? statusTicket, DateTime? dateVariable) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (null != allTasks?[index].description && '' != allTasks?[index].description)
+          Text(
+            "${AppString.task_Description.tr} ${allTasks?[index].description}",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            if (null != priority)
+              Expanded(
+                child: Text(
+                  "${'${AppString.task_prority}'.tr} ${priority}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            if (null != statusTicket)
+              Expanded(
+                child: Text(
+                  "${'${AppString.task_status}'.tr} ${statusTicket}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+          ],
+        ),
+        if (null != allTasks?[index].duration?.amount)SizedBox(height: 12),
+        if (null != allTasks?[index].duration?.amount)
+          Row(
+            children: [
+              if (null != allTasks?[index].duration?.unit)
+                Text(
+                  "${'Estimated Time'.tr} ${allTasks?[index].duration?.amount} ${allTasks?[index].duration?.unit}",
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+            ],
+          ),
+        SizedBox(height: 12),
+        if (null != allTasks?[index].due?.string) ...[
+          Text("${AppString.time_spent.tr}", style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(height: 6),
+          Text("${AppString.start_time.tr}   ${allTasks?[index].due?.string}"),
+          if (null != dateVariable) Text("${AppString.end_time.tr}     ${AppUtil.format(dateVariable)}"),
+        ],
+      ],
+    );
   }
 
 }

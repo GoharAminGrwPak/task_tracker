@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:task_tracker/bootstrap/injection_container.dart';
 import 'package:task_tracker/core/common/lables/app_strings.dart';
@@ -11,7 +12,7 @@ import 'package:task_tracker/features/dashboard/domain/usecases/delete_project_u
 import 'package:task_tracker/features/dashboard/domain/usecases/delete_task_usecase.dart';
 
 class DashboardController extends GetxController{
-  RxInt selectedIndex=0.obs;
+  RxInt selectedIndex=1.obs;
   List<ProjectModelDto>? allProjects;
   List<TaskEntity>? allTasks;
 
@@ -31,7 +32,14 @@ class DashboardController extends GetxController{
     allTasks=null;
     update(['root','load_new_tasks']);
     AppDependency<AllTaskUseCase>().getAllTasks(query,(p0){
-      allTasks=p0;
+      if(null!=query) {
+        allTasks=p0.where((e){
+          debugPrint('getAllTasks ${e.projectId} == ${query}');
+          return e.projectId==query;
+        }).toList();
+      }else {
+        allTasks = p0;
+      }
       update(['root','load_new_tasks']);
     });
   }

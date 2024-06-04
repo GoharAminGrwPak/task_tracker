@@ -19,7 +19,7 @@ class AllTasksPage extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(title: Text('${taskController.projectName}'),),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.only(left: 15.0,right: 15,top: 15),
         child: GetBuilder(
             init: dashboardController,
             id: 'root',

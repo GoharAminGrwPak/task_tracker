@@ -13,7 +13,7 @@ class TabBarItemWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: selectedIndex != index?ColorConstants.white:ColorConstants.mainColor,
+        color: selectedIndex != index?Colors.transparent:ColorConstants.mainColor,
         border: Border.all(color: selectedIndex != index?ColorConstants.greyColor.shade200 : ColorConstants.mainColor),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(8.0),

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:task_tracker/core/common/theme/theme_controller.dart';
 import 'package:task_tracker/features/dashboard/data/repositories/project_repository_impl.dart';
 import 'package:task_tracker/features/dashboard/data/repositories/task_repository_impl.dart';
 import 'package:task_tracker/features/dashboard/domain/repositories/project_repository.dart';
@@ -18,6 +19,7 @@ initDependencies(){
   AppDependency.registerLazySingleton<DashboardController>(() => DashboardController());
   AppDependency.registerLazySingleton<ProjectController>(() => ProjectController());
   AppDependency.registerLazySingleton<TaskController>(() => TaskController());
+  AppDependency.registerLazySingleton<ThemeController>(() => ThemeController());
 
   //Repositories
   AppDependency.registerLazySingleton<ProjectRepository>(() => ProjectRepositoryImpl());

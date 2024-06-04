@@ -56,8 +56,8 @@ class TaskController extends GetxController{
     id=null;
     taskNameController.text='';
     taskDescController.text='';
-    taskProrityController.text='';
-    taskStatusController.text='';
+    taskProrityController.text='${prority.first}';
+    taskStatusController.text='${status.first}';
     taskDurationUnitController.text='';
     taskDurationController.text='';
     dueDateController.text='';
@@ -85,10 +85,10 @@ class TaskController extends GetxController{
     if(taskStatusController.text.isNotEmpty){
       var indexWhere = status.indexWhere((element) => element==taskStatusController.text);
       lables[0]='${statusCode[indexWhere]}';
-      map['labels']=lables[0];
+      map['labels']=[lables[0]];
     }else{
       lables[0]='${statusCode[0]}';
-      map['labels']=lables[0];
+      map['labels']=[lables[0]];
     }
 
     if(startDateTimeController.text.isNotEmpty){

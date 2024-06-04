@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_tracker/core/common/colors/color_constants.dart';
 import 'package:task_tracker/features/dashboard/domain/entities/project_type_entity.dart';
 
@@ -23,7 +24,7 @@ class ProjectTypeItemWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('${item.name}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+          Text('${item.name}'.tr,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
           Row(children: [
             Container(
                 padding: EdgeInsets.all( 6),
@@ -33,7 +34,7 @@ class ProjectTypeItemWidget extends StatelessWidget {
                 ) ,
                 child: Icon(item.icon,color: ColorConstants.mainColor,)),
             SizedBox(width: 10,),
-            Expanded(child: Text('${item.description}',style: TextStyle(fontSize: 13),)),
+            Expanded(child: Text('${item.description}'.tr,style: TextStyle(fontSize: 13),)),
 
           ],),
           SizedBox(height: 10,),

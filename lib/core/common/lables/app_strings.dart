@@ -1,5 +1,6 @@
 class AppString{
   AppString._();
+  static const app_name='Task Tracker';
   static const projects_app_bar='Task Tracker';
   static const project_name='Project Name';
   static const project='Project';
@@ -15,7 +16,7 @@ class AppString{
   static const select='Select';
   static const project_name_hint='Please enter project name';
   static const task_name_hint='Please enter task name';
-  static const projects_no_data='No information is recorded\nPlease Tap + to Start';
+  static const projects_no_data='No information is recorded';
   static const project_success='has been created successfully';
   static const something_went_wrong='Something went wrong';
   static const create_project='New';

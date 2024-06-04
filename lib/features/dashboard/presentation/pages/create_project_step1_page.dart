@@ -19,7 +19,7 @@ class CreateProjectTypePage extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(title: Text(AppString.create_project.tr),),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.only(left: 15.0,right: 15,top: 15),
         child: ListView(children: [
           StepsIndicator(1),
           Obx(() => Column(children: List.generate(projectController.typesList.length, (index) =>

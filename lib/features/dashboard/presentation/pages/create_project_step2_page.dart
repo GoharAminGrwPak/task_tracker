@@ -19,7 +19,7 @@ class CreateProjectPage extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(title: Text(AppString.create_project.tr),),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.only(left: 15.0,right: 15,top: 15),
         child: GetBuilder(
           init: taskController,
           id: 'root',
@@ -36,7 +36,11 @@ class CreateProjectPage extends StatelessWidget {
                 SizedBox(height: 20,),
                 if(null!=taskController.projectId&& null!=taskController.projectName)AbsorbPointer(child: getTextField(TextEditingController(text: '${taskController.projectName}'),AppString.project_name,AppString.task_name_hint,isRequired: true)),
                 getTextField(taskController.taskNameController,AppString.task_name,AppString.task_name_hint,isRequired: true),
+                SizedBox(height: 10,),
+
                 getTextField(taskController.taskDescController,AppString.task_Description.tr,''),
+                SizedBox(height: 10,),
+
                 InkWell(
                   onTap: (){
                     FocusScope.of(context).requestFocus(new FocusNode());
@@ -47,6 +51,8 @@ class CreateProjectPage extends StatelessWidget {
                       AppString.task_status, '',
                       key: taskController.statusKey, list:taskController.status),
                 ),
+                SizedBox(height: 10,),
+
                 InkWell(
                   onTap: (){
                     FocusScope.of(context).requestFocus(new FocusNode());
@@ -57,26 +63,36 @@ class CreateProjectPage extends StatelessWidget {
                       AppString.task_prority, '',
                       key: taskController.prorityKey, list:taskController.prority),
                 ),
+                SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child:
-                    getTextField(taskController.taskDurationController,
-                        AppString.task_unit.tr,'')),
-                    SizedBox(width: 10,),
-                    Expanded(
-                      child: InkWell(
-                        onTap: (){
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                          taskController.durationKey.currentState!.showButtonMenu();
-                        },
-                        child: dropDownWidget(context,
-                            taskController.taskDurationUnitController,
-                            AppString.task_unit, '',
-                            key: taskController.durationKey, list:taskController.durationUnit),
-                      ),
-                    ),
+                    Text('Estimated Time'.tr,style: TextStyle(fontWeight: FontWeight.bold),),
                   ],
                 ),
+                SizedBox(height: 6,),
+                Row(
+                  children: [
+                    Expanded(child: getTextField(taskController.taskDurationController, AppString.task_unit.tr,'')),
+                    SizedBox(width: 10,),
+                    Expanded(
+            child: InkWell(
+            onTap: (){
+            FocusScope.of(context).requestFocus(new FocusNode());
+            taskController.durationKey.currentState!.showButtonMenu();
+            },
+            child: dropDownWidget(context,
+            taskController.taskDurationUnitController,
+            AppString.task_unit, '',
+            key: taskController.durationKey, list:taskController.durationUnit),
+                  ),
+                )]),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Text('Developer Track Time'.tr,style: TextStyle(fontWeight: FontWeight.bold),),
+                  ],
+                ),
+                SizedBox(height: 6,),
                 Row(
                   children: [
                     Expanded(child: InkWell( onTap: (){
@@ -93,15 +109,7 @@ class CreateProjectPage extends StatelessWidget {
                     },child: AbsorbPointer(child: getTextField(taskController.dueDateController,AppString.end_time.tr,'')))),
                   ],
                 ),
-                if(taskController.startDateTimeController.text.isNotEmpty
-                    && taskController.dueDateController.text.isNotEmpty)
-                  RichText(text: TextSpan(
-                    children: [
-                      TextSpan(text: '${AppString.time_spent}'.tr),
-                      WidgetSpan(child: SizedBox(width: 10,)),
-                      TextSpan(text: 'Calculating'.tr),
-                    ]
-                  )),
+                SizedBox(height: 10,),
               ],),
             ],);
           }
