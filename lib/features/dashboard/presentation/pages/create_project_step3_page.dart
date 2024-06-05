@@ -32,8 +32,8 @@ class CreateProjectSuccessPage extends StatelessWidget {
       ),
       bottomNavigationBar: InkWell(
         onTap: (){
-          Get.back();
-          Get.back();
+          Get.back(result: true);
+          Get.back(result: true);
         }, child: NextButtonWidget(title: AppString.home,)),
     );
   }

@@ -97,7 +97,15 @@ class DashboardPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
         projectController.selectedType.value=dashboardController.selectedIndex.value==0?1:2;
-        Get.toNamed(AppRoutes.newTaskStep1);
+        Get.toNamed(AppRoutes.newTaskStep1)?.then((value){
+          if(value==true){
+            if(dashboardController.selectedIndex.value==0) {
+              dashboardController.getAllProjects();
+            }else{
+              dashboardController.getAllTasks();
+            }
+          }
+        });
       }, child: Icon(Icons.add),),
     );
   }

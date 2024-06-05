@@ -124,7 +124,7 @@ class TaskController extends GetxController{
       if(null==AppDependency<TaskController>().projectId) {
         Get.offAndToNamed(AppRoutes.newTaskStep3);
       }else{
-        Get.back();
+        Get.back(result: true);
       }
     },id:id);
   }

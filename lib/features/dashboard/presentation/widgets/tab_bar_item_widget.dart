@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_tracker/core/common/colors/color_constants.dart';
 class TabBarItemWidget extends StatelessWidget {
   final int selectedIndex;
@@ -22,7 +23,7 @@ class TabBarItemWidget extends StatelessWidget {
           topRight: Radius.circular(8.0),
         ),
       ),
-      child: Center(child: Text('$label')),
+      child: Center(child: Text('$label'.tr)),
     );
   }
 }
